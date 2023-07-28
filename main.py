@@ -1,18 +1,14 @@
 import monkeytype
 import sys
-from lib import foo
+from lib import foo, nonint
 from types import CodeType, FrameType
 from typing import Any
 from valuetypes import int8, int16, int32, int64
 
 
-def shrink_types(types, max_typed_dict_size) -> type:
-    ...
-
-
 def get_type(obj, max_typed_dict_size) -> type:
     if type(obj) is not int:
-        return type(obj)
+        return monkeytype.tracing.get_type(obj, max_typed_dict_size)
     for ty in (int8, int16, int32, int64):
         if -(2**ty.width) <= obj <= 2**ty.width - 1:
             return ty
@@ -71,5 +67,6 @@ if __name__ == "__main__":
     sys.setprofile(tracer)
     for i in range(100):
         foo(3)
+        nonint("hello")
     sys.setprofile(None)
     logger.flush()

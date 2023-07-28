@@ -3,4 +3,8 @@ def bar(x):
 
 
 def foo(x):
-    return 100 * bar(x+100)
+    return 100 * bar(x + 100)
+
+
+def nonint(x):
+    return bar(x)
